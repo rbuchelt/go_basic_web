@@ -1,0 +1,60 @@
+package main
+
+import (
+	"errors"
+	"fmt"
+	"net/http"
+)
+
+var portNumber = ":8080"
+
+// Home is the Home Page Handler
+
+func Home(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "This is the Home Page!")
+}
+
+// About is the page handler
+
+func About(w http.ResponseWriter, r *http.Request) {
+	sum := addValues(2, 2)
+	fmt.Fprintf(w, "This is the about page and 2 + 2 is: %d", sum)
+	// Usando o Fprintf a string será impressa na página do navegador, enquanto que usando o Println será impresso no console
+}
+
+// addValues add two integers and return the sum
+
+func addValues(x, y int) int {
+	return x + y
+}
+
+func Divide(w http.ResponseWriter, r *http.Request) {
+	f, err := divideValues(100, 00)
+	if err != nil {
+		fmt.Fprintf(w, "Cannot divide by 0")
+		return
+	}
+
+	fmt.Fprintf(w, "%f divided by %f is %f", 100.0, 0.0, f)
+}
+
+func divideValues(x, y float32) (float32, error) {
+	if y == 0 {
+		err := errors.New("cannot divide by zero")
+		return 0, err
+	}
+
+	result := x / y
+	return result, nil
+}
+
+// main is the main application function
+
+func main() {
+	http.HandleFunc("/", Home)
+	http.HandleFunc("/about", About)
+	http.HandleFunc("/divide", Divide)
+
+	fmt.Printf("Starting application on port %s \n", portNumber)
+	http.ListenAndServe(portNumber, nil)
+}

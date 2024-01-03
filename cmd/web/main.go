@@ -3,7 +3,8 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"web_basic/handlers"
+
+	"github.com/rbuchelt/basic_web/pkg/handlers"
 )
 
 var portNumber = ":8080"
